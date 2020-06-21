@@ -4,10 +4,7 @@
 #include <ESP8266WebServer.h>
 #include "config.h"
 
-const char* ssid = STASSID;
-const char* password = STAPSK;
-
-ESP8266WebServer server(80);
+ESP8266WebServer server(PORT);
 
 const char* www_username = LOGIN;
 const char* www_password = PASSWORD;
@@ -21,16 +18,29 @@ int ledPin = 13; // GPIO13---D7 of NodeMCU
 
 void setup() {
   Serial.begin(115200);
-  WiFi.disconnect();  //Prevent connecting to wifi based on previous configuration
-  WiFi.mode(WIFI_STA);
   WiFi.hostname(HOSTNAME);      // DHCP Hostname (useful for finding device for static lease)
-  WiFi.begin(ssid, password);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WiFi_SSID, WiFi_Password);
+  while(WiFi.status() != WL_CONNECTED){
+		/*Note: if connection is established, and then lost for some reason, ESP will automatically reconnect. This will be done automatically by Wi-Fi library, without any user intervention.*/
+		delay(1000);
+		Serial.print(".");
+	}
+	Serial.print("\nConnected to " + String(WiFi_SSID) + " with IP Address: "); Serial.print(WiFi.localIP()); Serial.print("\n");
+
   if (WiFi.waitForConnectResult() != WL_CONNECTED) {
     Serial.println("WiFi Connect Failed! Rebooting...");
     delay(1000);
     ESP.restart();
   }
-  ArduinoOTA.begin();
+  // ArduinoOTA.begin();
+
+  // MDNS.begin("testing-simeon");
+  if (!MDNS.begin(HOSTNAME)) {
+    Serial.println("Error setting up MDNS responder!");
+  }
+  MDNS.addService("http", "tcp", PORT);
+
   pinMode(ledPin, OUTPUT);
 
   server.on("/", []() {
@@ -77,6 +87,7 @@ void setup() {
   Serial.print("Open http://");
   Serial.print(WiFi.localIP());
   Serial.println("/ in your browser to see it working");
+  Serial.print(WiFi.hostname());
 }
 
 void notFound() {
