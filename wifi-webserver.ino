@@ -39,7 +39,7 @@ void setup() {
   if (!MDNS.begin(HOSTNAME)) {
     Serial.println("Error setting up MDNS responder!");
   }
-  MDNS.addService("http", "tcp", PORT);
+  MDNS.addService("iot_http", "tcp", PORT);
 
   pinMode(ledPin, OUTPUT);
 
