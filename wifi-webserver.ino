@@ -3,11 +3,9 @@
 #include <ArduinoOTA.h>
 #include <ESP8266WebServer.h>
 #include "config.h"
+#include "config-name.h"
 
 ESP8266WebServer server(PORT);
-
-const char* www_username = LOGIN;
-const char* www_password = PASSWORD;
 
 int value = LOW;
 void updateValue(int val) {
@@ -39,15 +37,12 @@ void setup() {
   if (!MDNS.begin(HOSTNAME)) {
     Serial.println("Error setting up MDNS responder!");
   }
-  MDNS.addService("iot_http", "tcp", PORT);
+  MDNS.addService(SERVICE_NAME, "tcp", PORT);
 
   pinMode(ledPin, OUTPUT);
 
   server.on("/", []() {
-    if (!server.authenticate(www_username, www_password)) {
-      return server.requestAuthentication();
-    }
-    server.send(200, "text/json", "{\"status\":\"Login OK\"}");
+    server.send(200, "text/json", "{\"status\":\"OK\"}");
   });
 
   server.on("/on", []() {
@@ -64,22 +59,28 @@ void setup() {
     server.send(200, "text/json", "{\"updated\":\"success\",\"status\":0}");
   });
 
-  server.on("/lighter", []() {
-    // more power to device
-    notFound();
-  });
-
-  server.on("/darker", []() {
-    // less power to device
-    notFound();
-  });
-
   server.on("/info", []() {
     // get device info
     server.send(200, "text/json", "{\"ip\":\"" + WiFi.localIP().toString() + "\"," +
       "\"status\":" + value + "," +
       "\"led_port\":" + ledPin + "," +
-      "\"location\":\"" + LOCATION + "\"}");
+      "\"location\":\"" + LOCATION + "\"," +
+      "\"hostname\":\"" + HOSTNAME + "\"," +
+      "\"api\":[" +
+        "{" +
+          "\"path\": \"http://" + HOSTNAME + ".local/on\"," +
+          "\"desc\": \"turn on kitchen light\"" +
+        "}, " +
+        "{" +
+          "\"path\": \"http://" + HOSTNAME + ".local/off\"," +
+          "\"desc\": \"turn off kitchen light\"" +
+        "}, " +
+        "{" +
+          "\"path\": \"http://" + HOSTNAME + ".local/info\"," +
+          "\"desc\": \"get info of this board\"" +
+        "}" +
+      "]" +
+    "}");
   });
 
   server.begin();
@@ -90,11 +91,10 @@ void setup() {
   Serial.print(WiFi.hostname());
 }
 
-void notFound() {
-  return server.send(404, "{\"error\":\"not found\"}");
-}
-
 void loop() {
   ArduinoOTA.handle();
   server.handleClient();
 }
+
+// collect header example
+// https://github.com/esp8266/Arduino/blob/4897e0006b5b0123a2fa31f67b14a3fff65ce561/libraries/ESP8266WebServer/examples/SimpleAuthentification/SimpleAuthentification.ino#L124
