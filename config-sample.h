@@ -1,10 +1,7 @@
 
-#define STASSID "SSID"
-#define STAPSK  "PW"
+#define WiFi_SSID "SSID"
+#define WiFi_Password  "PW"
 
-#define LOGIN "user"
-#define PASSWORD "password"
+#define SERVICE_NAME "iot_http"
 
-#define LOCATION "dev board"
-
-#define HOSTNAME "testboard"
+#define PORT 80
