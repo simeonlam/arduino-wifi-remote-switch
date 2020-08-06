@@ -4,6 +4,7 @@
 - arduino - 1.8.10
 - arduino-cli - 0.10.0
 - [cp2012 driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
+- esp8266 lib (from board manager) - 2.7.3
 
 ### Target
 build a web server for esp8266 **WeMos D1 R1**

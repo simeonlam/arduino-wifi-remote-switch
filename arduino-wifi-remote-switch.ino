@@ -92,6 +92,7 @@ void setup() {
     // turn on device
     digitalWrite(ledPin, HIGH);
     updateValue(HIGH);
+    server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "text/json", "{\"updated\":\"success\",\"status\":1}");
   });
 
@@ -99,11 +100,13 @@ void setup() {
     // turn off device
     digitalWrite(ledPin, LOW);
     updateValue(LOW);
+    server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "text/json", "{\"updated\":\"success\",\"status\":0}");
   });
 
   server.on("/info", []() {
     // get device info
+    server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "text/json", "{\"ip\":\"" + WiFi.localIP().toString() + "\"," +
       "\"status\":" + value + "," +
       "\"led_port\":" + ledPin + "," +
