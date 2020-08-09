@@ -120,17 +120,20 @@ void setup() {
       "\"api\":[" +
         "{" +
           "\"label\": \"light\"," +
-          "\"path\": \"http://" + HOSTNAME + ".local/on\"," +
+          "\"fullPath\": \"http://" + HOSTNAME + ".local/on\"," +
+          "\"path\": \"/on\"," +
           "\"desc\": \"turn on kitchen light\"" +
         "}, " +
         "{" +
           "\"label\": \"light\"," +
-          "\"path\": \"http://" + HOSTNAME + ".local/off\"," +
+          "\"fullPath\": \"http://" + HOSTNAME + ".local/off\"," +
+          "\"path\": \"/off\"," +
           "\"desc\": \"turn off kitchen light\"" +
         "}, " +
         "{" +
           "\"label\": \"info\"," +
-          "\"path\": \"http://" + HOSTNAME + ".local/info\"," +
+          "\"fullPath\": \"http://" + HOSTNAME + ".local/info\"," +
+          "\"path\": \"/info\"," +
           "\"desc\": \"get info of this board\"" +
         "}" +
       "]" +
