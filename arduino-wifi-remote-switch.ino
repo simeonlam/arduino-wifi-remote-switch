@@ -108,10 +108,15 @@ void setup() {
     // get device info
     server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "text/json", "{\"ip\":\"" + WiFi.localIP().toString() + "\"," +
-      "\"status\":" + value + "," +
-      "\"led_port\":" + ledPin + "," +
       "\"location\":\"" + LOCATION + "\"," +
       "\"hostname\":\"" + HOSTNAME + "\"," +
+      "\"protocol\":\"http\"," +
+      "\"devices\":{" +
+        "\"light\":{" +
+          "\"led_port\":" + ledPin + "," +
+          "\"status\":" + value +
+        "}" +
+      "}," +
       "\"api\":[" +
         "{" +
           "\"label\": \"light\"," +
