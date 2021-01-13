@@ -104,10 +104,15 @@ void setup() {
     server.send(200, "text/json", "{\"updated\":\"success\",\"status\":0}");
   });
 
+  server.on("/status", []() {
+    server.send(200, "text", value == HIGH ? "1" : "0");
+  });
+
   server.on("/info", []() {
     // get device info
     server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "text/json", "{\"ip\":\"" + WiFi.localIP().toString() + "\"," +
+      "\"version\":\"" + VERSION + "\"," +
       "\"location\":\"" + LOCATION + "\"," +
       "\"hostname\":\"" + HOSTNAME + "\"," +
       "\"protocol\":\"http\"," +
