@@ -140,6 +140,12 @@ void setup() {
           "\"fullPath\": \"http://" + HOSTNAME + ".local/info\"," +
           "\"path\": \"/info\"," +
           "\"desc\": \"get info of this board\"" +
+        "}, " +
+        "{" +
+          "\"label\": \"status\"," +
+          "\"fullPath\": \"http://" + HOSTNAME + ".local/status\"," +
+          "\"path\": \"/status\"," +
+          "\"desc\": \"get 1/0 status of the light\"" +
         "}" +
       "]" +
     "}");
