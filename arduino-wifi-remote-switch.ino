@@ -90,22 +90,22 @@ void setup() {
 
   server.on("/on", []() {
     // turn on device
-    digitalWrite(ledPin, HIGH);
-    updateValue(HIGH);
+    digitalWrite(ledPin, LOW);
+    updateValue(LOW);
     server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "text/json", "{\"updated\":\"success\",\"status\":1}");
   });
 
   server.on("/off", []() {
     // turn off device
-    digitalWrite(ledPin, LOW);
-    updateValue(LOW);
+    digitalWrite(ledPin, HIGH);
+    updateValue(HIGH);
     server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "text/json", "{\"updated\":\"success\",\"status\":0}");
   });
 
   server.on("/status", []() {
-    server.send(200, "text", value == HIGH ? "1" : "0");
+    server.send(200, "text", value == LOW ? "1" : "0");
   });
 
   server.on("/info", []() {
